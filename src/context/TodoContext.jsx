@@ -13,6 +13,7 @@ export const TodoProvider = ({ children }) => {
   });
 
   const [activeView, setActiveView] = useState("lists"); // lists, starred, deleted
+  const [sortOption, setSortOption] = useState("");
 
   // Save to localStorage whenever todoLists changes
   useEffect(() => {
@@ -136,23 +137,70 @@ export const TodoProvider = ({ children }) => {
 
   // Get filtered tasks based on active view
   const getFilteredTasks = () => {
+    let filtered;
+
     switch (activeView) {
       case "starred":
-        return todoLists.map((list) => ({
+        filtered = todoLists.map((list) => ({
           ...list,
           tasks: list.tasks.filter((task) => task.starred && !task.deleted),
         }));
+        break;
       case "deleted":
-        return todoLists.map((list) => ({
+        filtered = todoLists.map((list) => ({
           ...list,
           tasks: list.tasks.filter((task) => task.deleted),
         }));
-      default: // "lists" (formerly "all")
-        return todoLists.map((list) => ({
+        break;
+      default: // "lists"
+        filtered = todoLists.map((list) => ({
           ...list,
           tasks: list.tasks.filter((task) => !task.deleted),
         }));
+        break;
     }
+
+    // Sort the filtered lists and tasks based on sortOption
+    return sortLists(filtered);
+  };
+
+  // Sort lists and tasks
+  const sortLists = (lists) => {
+    if (!sortOption) return lists;
+
+    let sortedLists = [...lists];
+
+    // Sort lists by name if applicable
+    if (sortOption === "nameAsc") {
+      sortedLists.sort((a, b) => a.name.localeCompare(b.name));
+    } else if (sortOption === "nameDesc") {
+      sortedLists.sort((a, b) => b.name.localeCompare(a.name));
+    }
+
+    // Sort tasks within each list
+    return sortedLists.map((list) => {
+      let sortedTasks = [...list.tasks];
+
+      switch (sortOption) {
+        case "nameAsc":
+          sortedTasks.sort((a, b) => a.name.localeCompare(b.name));
+          break;
+        case "nameDesc":
+          sortedTasks.sort((a, b) => b.name.localeCompare(a.name));
+          break;
+        case "dateAsc":
+          sortedTasks.sort((a, b) => new Date(a.date) - new Date(b.date));
+          break;
+        case "dateDesc":
+          sortedTasks.sort((a, b) => new Date(b.date) - new Date(a.date));
+          break;
+        default:
+          // No sort
+          break;
+      }
+
+      return { ...list, tasks: sortedTasks };
+    });
   };
 
   return (
@@ -162,6 +210,8 @@ export const TodoProvider = ({ children }) => {
         filteredLists: getFilteredTasks(),
         activeView,
         setActiveView,
+        sortOption,
+        setSortOption,
         addList,
         deleteList,
         addTask,
