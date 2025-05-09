@@ -2,10 +2,17 @@ import React, { useState } from "react";
 import { useTodoContext } from "../context/TodoContext";
 import TodoCard from "./TodoCard";
 import AddTaskModal from "./AddTaskModal";
-import { BsGrid, BsListUl } from "react-icons/bs";
+import PageHeader from "./PageHeader";
 
 const TodoPage = () => {
-  const { filteredLists, activeView } = useTodoContext();
+  const {
+    filteredLists,
+    activeView,
+    sortOption,
+    setSortOption,
+    completionFilter,
+  } = useTodoContext();
+
   const [addingTaskToList, setAddingTaskToList] = useState(null);
   const [viewMode, setViewMode] = useState("grid");
 
@@ -20,15 +27,30 @@ const TodoPage = () => {
     }
   };
 
+  // Get a message that includes the completion filter status
   const getEmptyMessage = () => {
+    let baseMessage = "";
+
     switch (activeView) {
       case "starred":
-        return "No favorite tasks";
+        baseMessage = "No favorite tasks";
+        break;
       case "deleted":
-        return "No deleted tasks";
+        baseMessage = "No deleted tasks";
+        break;
       default:
-        return "No tasks yet";
+        baseMessage = "No tasks";
+        break;
     }
+
+    // Add the completion filter status to the message
+    if (completionFilter !== "all" && activeView !== "deleted") {
+      const filterText =
+        completionFilter === "completed" ? "completed" : "to-do";
+      return `No ${filterText} tasks found`;
+    }
+
+    return baseMessage;
   };
 
   // Determine if we should show a list based on its tasks
@@ -45,39 +67,14 @@ const TodoPage = () => {
   return (
     <div className="h-full grid-background">
       <div className="max-w-7xl mx-auto sm:py-12 py-[10vh] sm:px-6 lg:px-8">
-        {/* Header with title and view options */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between bg-[#0B4965] shadow-[#052331] shadow-lg text-gray-100 mb-6 px-4 rounded-sm p-[2vh]">
-          <h1 className="text-2xl font-bold">{getTitle()}</h1>
-
-          <div className="flex mt-2 sm:mt-0 space-x-2">
-            {/* View mode toggles */}
-            <button
-              className={`px-3 py-1 ${
-                viewMode === "grid"
-                  ? "bg-[#106688]"
-                  : "bg-[#0b3d54] hover:bg-[#106688]"
-              } rounded-md flex items-center`}
-              onClick={() => setViewMode("grid")}
-              title="Grid view"
-            >
-              <BsGrid className="mr-1" />
-              <span className="text-sm hidden sm:inline">Grid</span>
-            </button>
-
-            <button
-              className={`px-3 py-1 ${
-                viewMode === "list"
-                  ? "bg-[#106688]"
-                  : "bg-[#0b3d54] hover:bg-[#106688]"
-              } rounded-md flex items-center`}
-              onClick={() => setViewMode("list")}
-              title="List view"
-            >
-              <BsListUl className="mr-1" />
-              <span className="text-sm hidden sm:inline">List</span>
-            </button>
-          </div>
-        </div>
+        {/* Use the PageHeader component with all required props */}
+        <PageHeader
+          title={getTitle()}
+          viewMode={viewMode}
+          setViewMode={setViewMode}
+          sortOption={sortOption}
+          setSortOption={setSortOption}
+        />
 
         {/* Grid or List layout based on viewMode */}
         <div

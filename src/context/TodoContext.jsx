@@ -14,6 +14,7 @@ export const TodoProvider = ({ children }) => {
 
   const [activeView, setActiveView] = useState("lists"); // lists, starred, deleted
   const [sortOption, setSortOption] = useState("");
+  const [completionFilter, setCompletionFilter] = useState("all"); // all, completed, active
 
   // Save to localStorage whenever todoLists changes
   useEffect(() => {
@@ -135,10 +136,11 @@ export const TodoProvider = ({ children }) => {
     );
   };
 
-  // Get filtered tasks based on active view
+  // Get filtered tasks based on active view and completion status
   const getFilteredTasks = () => {
     let filtered;
 
+    // First filter by view type
     switch (activeView) {
       case "starred":
         filtered = todoLists.map((list) => ({
@@ -158,6 +160,16 @@ export const TodoProvider = ({ children }) => {
           tasks: list.tasks.filter((task) => !task.deleted),
         }));
         break;
+    }
+
+    // Then filter by completion status
+    if (completionFilter !== "all" && activeView !== "deleted") {
+      filtered = filtered.map((list) => ({
+        ...list,
+        tasks: list.tasks.filter((task) =>
+          completionFilter === "completed" ? task.done : !task.done
+        ),
+      }));
     }
 
     // Sort the filtered lists and tasks based on sortOption
@@ -212,6 +224,8 @@ export const TodoProvider = ({ children }) => {
         setActiveView,
         sortOption,
         setSortOption,
+        completionFilter,
+        setCompletionFilter,
         addList,
         deleteList,
         addTask,
