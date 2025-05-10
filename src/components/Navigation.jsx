@@ -71,7 +71,7 @@ const Navigation = () => {
 
   return (
     <>
-      {/* Desktop sidebar - always visible on large screens */}
+      {/* Desktop sidebar */}
       <div className="hidden lg:flex lg:flex-shrink-0">
         <div className="flex flex-col w-64 h-full bg-[#0b3d54]">
           <NavigationLinks />

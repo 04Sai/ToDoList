@@ -27,7 +27,6 @@ const TodoPage = () => {
     }
   };
 
-  // Get a message that includes the completion filter status
   const getEmptyMessage = () => {
     let baseMessage = "";
 
@@ -43,7 +42,6 @@ const TodoPage = () => {
         break;
     }
 
-    // Add the completion filter status to the message
     if (completionFilter !== "all" && activeView !== "deleted") {
       const filterText =
         completionFilter === "completed" ? "completed" : "to-do";
@@ -53,7 +51,6 @@ const TodoPage = () => {
     return baseMessage;
   };
 
-  // Determine if we should show a list based on its tasks
   const shouldShowList = (list) => {
     if (activeView === "deleted" || activeView === "starred") {
       return list.tasks.length > 0;
@@ -61,13 +58,11 @@ const TodoPage = () => {
     return true;
   };
 
-  // Filter out empty lists when in starred or deleted views
   const visibleLists = filteredLists.filter(shouldShowList);
 
   return (
     <div className="h-full grid-background">
       <div className="max-w-7xl mx-auto sm:py-12 py-[10vh] sm:px-6 lg:px-8">
-        {/* Use the PageHeader component with all required props */}
         <PageHeader
           title={getTitle()}
           viewMode={viewMode}
@@ -93,14 +88,6 @@ const TodoPage = () => {
               }
             >
               <p className="text-gray-500 mb-4">{getEmptyMessage()}</p>
-              {activeView === "lists" && (
-                <button
-                  onClick={() => setAddingTaskToList(filteredLists[0]?.id)}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                >
-                  Add your first task
-                </button>
-              )}
             </div>
           ) : (
             visibleLists.map((list) => (

@@ -50,7 +50,7 @@ const PageHeader = ({
       <h1 className="text-2xl font-bold">{title}</h1>
 
       <div className="flex flex-col sm:flex-row sm:space-x-4 mt-2 sm:mt-0">
-        {/* Completion filter buttons */}
+        {/* Complete filter buttons */}
         <div className="flex space-x-2 mb-2 sm:mb-0">
           <button
             className={`px-3 py-1 rounded-md flex items-center ${

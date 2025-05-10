@@ -13,7 +13,7 @@ export const initialLists = [
             },
             {
                 id: 2,
-                name: "Review presentation slides",
+                name: "Deploy website",
                 date: "2023-05-16",
                 done: true,
                 starred: true,
@@ -21,7 +21,7 @@ export const initialLists = [
             },
             {
                 id: 3,
-                name: "Schedule team meeting",
+                name: "Assignemnts",
                 date: "2023-05-17",
                 done: false,
                 starred: false,
@@ -35,7 +35,7 @@ export const initialLists = [
         tasks: [
             {
                 id: 4,
-                name: "Buy groceries",
+                name: "Review for Exam",
                 date: "2023-05-14",
                 done: false,
                 starred: false,
@@ -43,7 +43,7 @@ export const initialLists = [
             },
             {
                 id: 5,
-                name: "Call doctor",
+                name: "Clean",
                 date: "2023-05-15",
                 done: false,
                 starred: false,

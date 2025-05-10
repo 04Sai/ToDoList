@@ -112,7 +112,7 @@ const TodoCard = ({
     );
   };
 
-  // Render header with add/delete buttons
+  // Header with add/delete buttons
   const renderHeader = () => (
     <div className="bg-[#0B4965] p-4 flex justify-between items-center min-h-[4rem]">
       <h2
@@ -144,7 +144,7 @@ const TodoCard = ({
     </div>
   );
 
-  // Render task content - name, star, date
+  // task content - name, star, date
   const renderTaskContent = (task) => (
     <div className="flex-1">
       <div className="flex items-center">
@@ -166,7 +166,7 @@ const TodoCard = ({
     </div>
   );
 
-  // Render tasks list
+  // tasks list
   const renderTasks = () => (
     <div className="p-4">
       {viewMode === "list" && (
@@ -197,7 +197,7 @@ const TodoCard = ({
     </div>
   );
 
-  // Render confirmation modals
+  // confirmation modals
   const renderConfirmationModals = () => (
     <>
       <ConfirmationModal
@@ -226,7 +226,7 @@ const TodoCard = ({
     </>
   );
 
-  // Main render
+  // Main
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
       {renderHeader()}
